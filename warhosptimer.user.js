@@ -3,7 +3,6 @@
 // @namespace    https://torn.com/
 // @version      3.3
 // @description  Hospital timer sorter (runs only on war/rank view)
-// @author       Not Potato
 // @match        https://www.torn.com/factions.php*
 // @grant        none
 // @downloadURL  https://raw.githubusercontent.com/OgBobb/warhosptimer/main/warhosptimer.js
