@@ -1,32 +1,32 @@
 // ==UserScript==
-// @name         StolenAndFixedTimer
+// @name         warhosptimer
 // @namespace    https://torn.com/
 // @version      3.3
 // @description  Hospital timer sorter (runs only on war/rank view)
 // @author       Not Potato
 // @match        https://www.torn.com/factions.php*
 // @grant        none
-// @downloadURL  https://raw.githubusercontent.com/OgBobb/warhosptimer/main/wartimer
-// @updateURL    https://raw.githubusercontent.com/OgBobb/warhosptimer/main/wartimer
+// @downloadURL  https://raw.githubusercontent.com/OgBobb/warhosptimer/main/warhosptimer.js
+// @updateURL    https://raw.githubusercontent.com/OgBobb/warhosptimer/main/warhosptimer.js
 // ==/UserScript==
 
 (function () {
     'use strict';
 
     const debug = true;
-    const log = (...args) => debug && console.log('[StolenTimer]', ...args);
+    const log = (...args) => debug && console.log('[warhosptimer]', ...args);
 
     let activeTimers = {};
     let previousMembers = [];
-    let apiKey = localStorage.getItem("stolenWarTimerKey") || "";
+    let apiKey = localStorage.getItem("warhosptimerKey") || "";
     let lastSort = 0;
     let cooldownUntil = 0;
     let lastContainerId = null;
     let reloadObserver = null;
 
     if (!apiKey) {
-        apiKey = prompt("Enter your Torn API key:");
-        if (apiKey) localStorage.setItem("stolenWarTimerKey", apiKey);
+        apiKey = prompt("Enter your Torn API key for warhosptimer:");
+        if (apiKey) localStorage.setItem("warhosptimerKey", apiKey);
         else {
             alert("No API key provided. Script halted.");
             return;
@@ -79,7 +79,7 @@
             return data.members;
         } catch (e) {
             cooldownUntil = now + 5 * 60 * 1000;
-            console.error("[StolenTimer] Fetch error:", e);
+            console.error("[warhosptimer] Fetch error:", e);
             return null;
         }
     }
@@ -198,7 +198,6 @@
 
     async function init() {
         if (!isOnWarRank()) return;
-        // Clear any existing timers/previous state when reopening the panel
         Object.values(activeTimers).forEach(id => clearInterval(id));
         activeTimers = {};
         previousMembers = [];
@@ -206,10 +205,8 @@
 
         const container = document.querySelector("div[class*='members-cont']");
         if (!container) return;
-        const cid = container.innerHTML.length;
-        if (cid === lastContainerId) return;
-        lastContainerId = cid;
-        log("Initializing StolenTimer...");
+        lastContainerId = container.innerHTML.length;
+        log("Initializing warhosptimer...");
         const fid = getFactionIdFromSidebarImage();
         if (!fid) return log("No faction ID.");
         await updateLoop(fid);
